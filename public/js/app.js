@@ -1,5 +1,4 @@
 
-
 var app = angular.module("timeTrackerApp", ['ui.router']);
 
 app.config(function($stateProvider, $urlRouterProvider) {

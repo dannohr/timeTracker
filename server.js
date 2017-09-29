@@ -1,3 +1,5 @@
+const {dbUser, dbPass, dbName, dbServer, nodePort, sessionSecret} = require('./config/config')
+
 //Express
 var express = require('express');
 var app = express();
@@ -11,7 +13,7 @@ require('./config/passport')(passport); // pass passport for configuration
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 app.use(session({
-  secret: 'this is the secret'
+  secret: sessionSecret
 }));
 app.use(cookieParser());
 app.use(passport.initialize());
@@ -24,10 +26,22 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+//Massive
+const massive = require('massive');
+const connectionString = `postgres://${dbUser}:${dbPass}@${dbServer}/${dbName}`
+const massiveConnection = massive(connectionString)
+.then(db => {
+    app.set('db',db);
+})
+
+.catch(err => {
+    console.log(err)
+})
+
 
 // routes ======================================================================
 require('./routes/auth.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 
-app.listen(3000);
+app.listen( nodePort, () => { console.log(`Server listening on port ${nodePort}.`); } );
 

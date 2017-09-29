@@ -9,11 +9,12 @@ module.exports = function(passport) {
 
   passport.serializeUser(function(user, done) {
     done(null, user);
-  });
+  });  //Adds user to the session
 
   passport.deserializeUser(function(user, done) {
     done(null, user);
-  });
+  });   // Pulls user off session and un-hashes it so you can see and use it
+        // will now have reg.user, use to interact with the users info
 
 	passport.use('local-login', new LocalStrategy(
 	  function(username, password, done) {

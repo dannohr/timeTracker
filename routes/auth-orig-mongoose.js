@@ -3,7 +3,6 @@ var db = require("../models");
 module.exports = function(app, passport) {
     // process the login form
     app.post("/login", passport.authenticate('local-login'), function(req, res) {
-      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Cookie expires after 30 days      
       res.json(req.user);
     });
 
